@@ -66,7 +66,7 @@ const STATS = [
   { val: "DIN EN", label: "გერმანული სტანდარტი" },
   { val: "100%", label: "ჰიპოალერგიული ეკო-მასალა" },
   { val: "0 ₾", label: "უფასო მიწოდება" },
-  { val: "15 წელი", label: "ოფიციალური გარანტია" },
+  { val: "2 წელი", label: "ოფიციალური გარანტია" },
 ];
 
 export default function Product() {
