@@ -1,24 +1,25 @@
 import React, { useState, useRef } from "react";
 
-const img1 = "Black.png";
-const img2 = "tetri.png";
-const img3 = "shida.png";
+// მედია ფაილების სწორი მისამართები (თუ ფაილები public საქაღალდეშია)
+const img1 = "/Black.png";
+const img2 = "/tetri.png";
+const img3 = "/shida.png";
 
 const VIDEOS = [
   {
-    src: "Matrasi.mp4",
+    src: "/Matrasi.mp4",
     poster: img3,
     title: "მატრასის პრეზენტაცია",
     desc: "გერმანული წარმოება და ანატომიური სტრუქტურა",
   },
   {
-    src: "Koja.mp4",
+    src: "/Koja.mp4",
     poster: img1,
     title: "კოჟის კოლექცია",
     desc: "პრემიუმ კოჟის საფარი და შიდა ფენები",
   },
   {
-    src: "Masajori.mp4",
+    src: "/Masajori.mp4",
     poster: img2,
     title: "მასაჟური სისტემა",
     desc: "ჩაშენებული მასაჟური მექანიზმის დემონსტრაცია",
@@ -71,7 +72,8 @@ export default function Main() {
   };
 
   return (
-    <div className="bg-slate-50 min-h-screen font-sans text-slate-800 antialiased overflow-x-hidden">
+    // დავამატეთ scroll-smooth მთლიან კონტეინერზე, რომ ჩამოსვლა იყოს რბილი და სასიამოვნო
+    <div className="bg-slate-50 min-h-screen font-sans text-slate-800 antialiased overflow-x-hidden scroll-smooth">
       {/* ─── HERO ─── */}
       <section className="relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-900 text-white overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 sm:w-96 sm:h-96 bg-emerald-500/8 rounded-full blur-3xl pointer-events-none" />
@@ -99,9 +101,10 @@ export default function Main() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 pt-1 max-w-xs mx-auto sm:max-w-none lg:mx-0">
+                {/* შეცვლილი ღილაკი: href მიუთითებს პროდუქტების id-ზე */}
                 <a
-                  href={`tel:${phoneNumber}`}
-                  className="flex-1 sm:flex-none px-7 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 active:from-emerald-400 active:to-teal-500 text-slate-950 font-bold rounded-2xl shadow-lg shadow-emerald-500/20 transition-all duration-200 active:scale-[0.97] text-center text-sm sm:text-base"
+                  href="#products-section"
+                  className="flex-1 sm:flex-none px-7 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 active:from-emerald-400 active:to-teal-500 text-slate-950 font-bold rounded-2xl shadow-lg shadow-emerald-500/20 transition-all duration-200 active:scale-[0.97] text-center text-sm sm:text-base cursor-pointer"
                 >
                   კატალოგის ნახვა
                 </a>
@@ -203,7 +206,11 @@ export default function Main() {
       </section>
 
       {/* ─── PRODUCTS ─── */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
+      {/* დავამატეთ id="products-section" სექციაზე, რომლისკენაც ჩამოვა გვერდი */}
+      <section
+        id="products-section"
+        className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 scroll-mt-6"
+      >
         <div className="flex items-end justify-between mb-8 sm:mb-12">
           <div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
