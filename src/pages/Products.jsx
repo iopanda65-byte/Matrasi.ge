@@ -90,12 +90,12 @@ export default function Product() {
         </div>
 
         {/* ─── PRODUCTS GRID ─── */}
-        {/* mobile: 2-col; lg: 4-col */}
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 lg:gap-8">
-          {MATTRESSES.map((mattress) => (
+          {MATTRESSES.map((mattress, index) => (
             <div
               key={mattress.id}
-              className="bg-slate-800/95 shadow-lg shadow-slate-900/10 rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-700/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.15)] hover:border-emerald-500/30 flex flex-col group p-3 sm:p-5 relative text-slate-100"
+              style={{ animationDelay: `${index * 80}ms` }} // თითოეული ბარათი ამოვა მცირე დაგვიანებით
+              className="animate-card bg-slate-800/95 shadow-lg shadow-slate-900/10 rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-700/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.15)] hover:border-emerald-500/30 flex flex-col group p-3 sm:p-5 relative text-slate-100"
             >
               {/* IMAGE */}
               <div className="bg-slate-100 rounded-xl sm:rounded-2xl h-36 sm:h-52 flex items-center justify-center relative overflow-hidden mb-3 sm:mb-5 border border-slate-700/30 p-2 shrink-0">
@@ -196,6 +196,7 @@ export default function Product() {
             დღეში.
           </p>
           <a
+            box-shadow="none"
             href={`tel:${phoneNumber}`}
             className="inline-flex items-center gap-2 px-7 sm:px-8 py-3.5 sm:py-4 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold rounded-xl shadow-md transition-all duration-200 active:scale-[0.97] text-sm sm:text-base"
           >

@@ -88,7 +88,10 @@ export default function About() {
       {/* ─── MISSION ─── */}
       <section className="max-w-7xl mx-auto py-12 sm:py-24 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-16 items-center">
-          <div className="space-y-4 sm:space-y-6 order-2 lg:order-1">
+          <div
+            style={{ animationDelay: "150ms" }}
+            className="animate-card space-y-4 sm:space-y-6 order-2 lg:order-1"
+          >
             <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
               რატომ ჩვენი მატრასები?
             </h2>
@@ -108,7 +111,10 @@ export default function About() {
           </div>
 
           {/* ვიზუალი — მობილურზე პატარა, კომპიუტერზე დიდი */}
-          <div className="order-1 lg:order-2 bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-10 border border-slate-200/60 shadow-lg flex items-center justify-center text-center relative h-48 sm:h-80 overflow-hidden group">
+          <div
+            style={{ animationDelay: "300ms" }}
+            className="animate-card order-1 lg:order-2 bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-10 border border-slate-200/60 shadow-lg flex items-center justify-center text-center relative h-48 sm:h-80 overflow-hidden group"
+          >
             <div className="absolute inset-0 bg-gradient-to-tr from-slate-50 to-emerald-50/30 opacity-50" />
             <div className="relative z-10 space-y-3">
               <span className="text-5xl sm:text-6xl block group-hover:scale-110 transition-transform duration-500 select-none">
@@ -125,12 +131,12 @@ export default function About() {
       {/* ─── FEATURES ─── */}
       <section className="bg-white border-t border-b border-slate-200/50 py-10 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* მობილურზე: ვერტიკალური სია; md+: 3-სვეტი */}
           <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-100">
             {FEATURES.map((f, i) => (
               <div
                 key={i}
-                className="flex gap-4 md:flex-col md:gap-0 p-5 sm:p-8 group md:text-left"
+                style={{ animationDelay: `${450 + i * 100}ms` }} // ბარათები ამოვა რიგრიგობით
+                className="animate-card flex gap-4 md:flex-col md:gap-0 p-5 sm:p-8 group md:text-left"
               >
                 {/* ხატულა */}
                 <div className="shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-slate-50 rounded-xl sm:rounded-2xl flex items-center justify-center border border-slate-100 shadow-sm group-hover:bg-emerald-50 group-hover:border-emerald-100 transition-colors duration-300 md:mb-4">
@@ -151,7 +157,10 @@ export default function About() {
       </section>
 
       {/* ─── CTA ─── */}
-      <section className="max-w-4xl mx-auto py-14 sm:py-24 px-4 text-center space-y-5 sm:space-y-8">
+      <section
+        style={{ animationDelay: "850ms" }}
+        className="animate-card max-w-4xl mx-auto py-14 sm:py-24 px-4 text-center space-y-5 sm:space-y-8"
+      >
         <div className="space-y-2 sm:space-y-3">
           <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
             მზად ხართ იდეალური ძილისთვის?
@@ -162,7 +171,6 @@ export default function About() {
           </p>
         </div>
 
-        {/* მობილურზე — full-width ვერტიკალური; sm+ — გვერდიგვერდ */}
         <div className="flex flex-col sm:flex-row justify-center gap-3 max-w-xs mx-auto sm:max-w-none">
           <a
             href="/products"

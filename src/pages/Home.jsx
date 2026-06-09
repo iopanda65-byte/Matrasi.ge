@@ -74,7 +74,6 @@ export default function Main() {
     <div className="bg-slate-50 min-h-screen font-sans text-slate-800 antialiased overflow-x-hidden">
       {/* ─── HERO ─── */}
       <section className="relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-900 text-white overflow-hidden">
-        {/* decorative blobs */}
         <div className="absolute top-0 right-0 w-64 h-64 sm:w-96 sm:h-96 bg-emerald-500/8 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-teal-500/5 rounded-full blur-2xl pointer-events-none" />
         <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:20px_20px]" />
@@ -99,7 +98,6 @@ export default function Main() {
                 ანატომიური სიზუსტით და მაქსიმალური კომფორტით.
               </p>
 
-              {/* CTA buttons — full-width on mobile */}
               <div className="flex flex-col sm:flex-row gap-3 pt-1 max-w-xs mx-auto sm:max-w-none lg:mx-0">
                 <a
                   href={`tel:${phoneNumber}`}
@@ -116,7 +114,7 @@ export default function Main() {
               </div>
             </div>
 
-            {/* right — hero image (hidden on mobile) */}
+            {/* right — hero image */}
             <div className="hidden lg:flex justify-center">
               <div className="w-full max-w-sm h-64 xl:h-72 rounded-3xl overflow-hidden shadow-2xl border border-white/10 relative group">
                 <img
@@ -134,13 +132,14 @@ export default function Main() {
         </div>
       </section>
 
-      {/* Stats bar — გამოყვანილია section-იდან გარეთ, ჭრა აღარ ხდება */}
+      {/* Stats bar */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 sm:-mt-8 relative z-20">
         <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/60 shadow-xl grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-slate-100">
           {STATS.map((s, i) => (
             <div
               key={i}
-              className="flex flex-col items-center justify-center py-5 sm:py-7 px-3"
+              style={{ animationDelay: `${100 + i * 80}ms` }}
+              className="animate-card flex flex-col items-center justify-center py-5 sm:py-7 px-3"
             >
               <p className="text-lg sm:text-2xl lg:text-3xl font-black text-slate-900 leading-none">
                 {s.val}
@@ -167,12 +166,12 @@ export default function Main() {
           </p>
         </div>
 
-        {/* mobile: horizontal scroll; tablet+: 3-col grid */}
         <div className="flex gap-4 overflow-x-auto pb-3 snap-x snap-mandatory scrollbar-hide sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:overflow-visible sm:pb-0">
           {VIDEOS.map((video, i) => (
             <div
               key={i}
-              className="group flex-shrink-0 w-[78vw] sm:w-auto snap-start bg-slate-900 rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-700/50 shadow-lg hover:border-emerald-500/30 hover:shadow-emerald-500/10 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
+              style={{ animationDelay: `${400 + i * 120}ms` }}
+              className="animate-card group flex-shrink-0 w-[78vw] sm:w-auto snap-start bg-slate-900 rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-700/50 shadow-lg hover:border-emerald-500/30 hover:shadow-emerald-500/10 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
             >
               <div className="relative aspect-video bg-slate-950 overflow-hidden">
                 <video
@@ -222,12 +221,12 @@ export default function Main() {
           </a>
         </div>
 
-        {/* mobile: horizontal scroll; tablet+: grid */}
         <div className="flex gap-4 overflow-x-auto pb-3 snap-x snap-mandatory scrollbar-hide sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:overflow-visible sm:pb-0 sm:gap-6">
-          {FEATURED_PRODUCTS.map((mattress) => (
+          {FEATURED_PRODUCTS.map((mattress, i) => (
             <div
               key={mattress.id}
-              className="group flex-shrink-0 w-[72vw] sm:w-auto snap-start bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200/60 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-emerald-500/5 hover:border-emerald-500/20 flex flex-col"
+              style={{ animationDelay: `${500 + i * 120}ms` }}
+              className="animate-card group flex-shrink-0 w-[72vw] sm:w-auto snap-start bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200/60 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-emerald-500/5 hover:border-emerald-500/20 flex flex-col"
             >
               <div className="relative h-44 sm:h-52 overflow-hidden bg-slate-100">
                 <img

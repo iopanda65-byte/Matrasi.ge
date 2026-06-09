@@ -1,4 +1,9 @@
-import React from "react";
+import React, { useRef, useState } from "react";
+import emailjs from "@emailjs/browser";
+
+const SERVICE_ID = "service_p5htc7d";
+const TEMPLATE_ID = "template_kh3udza";
+const PUBLIC_KEY = "eYu17pNcJigA8JlG1";
 
 const CONTACT_ITEMS = [
   {
@@ -72,10 +77,32 @@ const INPUT_CLS =
   "w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-900 focus:bg-white transition-all text-base sm:text-sm";
 
 export default function Contact() {
+  const formRef = useRef();
+  const [status, setStatus] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus("loading");
+    try {
+      await emailjs.sendForm(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        formRef.current,
+        PUBLIC_KEY
+      );
+      
+      setStatus("success");
+      formRef.current.reset();
+    } catch (err) {
+      console.error("EmailJS Error:", err);
+      setStatus("error");
+    }
+  };
+
   return (
     <div className="bg-gradient-to-b from-slate-50 to-slate-100 min-h-screen py-10 sm:py-16 px-4 sm:px-6 lg:px-8 font-sans antialiased overflow-x-hidden">
       <div className="max-w-6xl mx-auto">
-        {/* ─── HEADER ─── */}
+        {/* სათაურის სექცია */}
         <div className="text-center mb-10 sm:mb-14 space-y-2.5">
           <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/5 text-slate-600 text-[11px] font-semibold tracking-widest uppercase">
             ✉️ მზად ვართ დასახმარებლად
@@ -89,22 +116,20 @@ export default function Contact() {
           </p>
         </div>
 
-        {/* ─── MAIN GRID ─── */}
-        {/* მობილურზე: კონტაქტები ზემოთ, ფორმა ქვემოთ — lg: გვერდიგვერდ */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-8 items-start">
-          {/* ── კონტაქტების ბარათი (მობილურზე პირველი) ── */}
-          <div className="lg:col-span-1 order-1 lg:order-2 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl relative overflow-hidden">
+          {/* საკონტაქტო ბარათი */}
+          <div 
+            style={{ animationDelay: "150ms" }}
+            className="animate-card lg:col-span-1 order-1 lg:order-2 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl relative overflow-hidden"
+          >
             <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-
             <div className="relative z-10">
               <h3 className="text-lg sm:text-2xl font-bold mb-1.5 tracking-tight">
-                საკონტაქტო ინფო
+                **საკონტაქტო ინფო**
               </h3>
               <p className="text-slate-400 text-xs sm:text-sm leading-relaxed mb-6 sm:mb-8">
                 ესტუმრეთ შოურუმს ან დაგვიკავშირდით მოსახერხებელი არხით.
               </p>
-
-              {/* მობილურზე — ჰორიზონტალური სია; sm+ — ვერტიკალური */}
               <div className="grid grid-cols-1 gap-4 sm:gap-6">
                 {CONTACT_ITEMS.map((item, i) => (
                   <a
@@ -132,7 +157,6 @@ export default function Contact() {
                   </a>
                 ))}
               </div>
-
               <div className="mt-6 sm:mt-8 pt-5 border-t border-slate-700/60">
                 <p className="text-[10px] text-slate-400 font-medium uppercase tracking-wider">
                   სამუშაო საათები
@@ -144,14 +168,18 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* ── ფორმა ── */}
-          <div className="lg:col-span-2 order-2 lg:order-1 bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-10 border border-slate-200/60 shadow-lg">
+          {/* ფორმა */}
+          <div 
+            style={{ animationDelay: "300ms" }}
+            className="animate-card lg:col-span-2 order-2 lg:order-1 bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-10 border border-slate-200/60 shadow-lg"
+          >
             <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-5 sm:mb-6 tracking-tight">
               მოგვწერეთ შეტყობინება
             </h3>
 
             <form
-              onSubmit={(e) => e.preventDefault()}
+              ref={formRef}
+              onSubmit={handleSubmit}
               className="space-y-4 sm:space-y-5"
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
@@ -161,8 +189,10 @@ export default function Contact() {
                   </label>
                   <input
                     type="text"
+                    name="from_name"
                     placeholder="გიორგი კაპანაძე"
                     className={INPUT_CLS}
+                    required
                   />
                 </div>
                 <div>
@@ -171,8 +201,10 @@ export default function Contact() {
                   </label>
                   <input
                     type="email"
+                    name="from_email"
                     placeholder="giorgi@example.com"
                     className={INPUT_CLS}
+                    required
                   />
                 </div>
               </div>
@@ -183,6 +215,7 @@ export default function Contact() {
                 </label>
                 <input
                   type="tel"
+                  name="phone"
                   placeholder="555 XXXXXX"
                   className={INPUT_CLS}
                 />
@@ -194,6 +227,7 @@ export default function Contact() {
                 </label>
                 <div className="relative">
                   <select
+                    name="mattress"
                     className={
                       INPUT_CLS + " appearance-none pr-10 text-slate-700"
                     }
@@ -217,18 +251,32 @@ export default function Contact() {
                 </label>
                 <textarea
                   rows="4"
+                  name="message"
                   placeholder="მოგვწერეთ დეტალურად..."
                   className={INPUT_CLS + " resize-none"}
                 />
               </div>
 
-              <div className="pt-1">
+              <div className="pt-1 space-y-2">
                 <button
                   type="submit"
-                  className="w-full sm:w-auto px-8 py-4 sm:py-3.5 bg-slate-900 hover:bg-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md transition-all duration-200 active:scale-[0.97]"
+                  disabled={status === "loading"}
+                  className="w-full sm:w-auto px-8 py-4 sm:py-3.5 bg-slate-900 hover:bg-emerald-600 disabled:opacity-60 text-white text-sm font-semibold rounded-xl shadow-md transition-all duration-200 active:scale-[0.97]"
                 >
-                  შეტყობინების გაგზავნა →
+                  {status === "loading"
+                    ? "იგზავნება..."
+                    : "შეტყობინების გაგზავნა →"}
                 </button>
+                {status === "success" && (
+                  <p className="text-emerald-600 text-sm font-medium">
+                    ✓ შეტყობინება წარმატებით გაიგზავნა!
+                  </p>
+                )}
+                {status === "error" && (
+                  <p className="text-red-500 text-sm font-medium">
+                    შეცდომა, გთხოვთ სცადოთ თავიდან.
+                  </p>
+                )}
               </div>
             </form>
           </div>
