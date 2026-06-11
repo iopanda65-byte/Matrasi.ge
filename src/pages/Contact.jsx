@@ -1,5 +1,7 @@
 import React, { useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
+// შემოგვაქვს Helmet მეტა ტეგებისთვის
+import { Helmet } from "react-helmet-async";
 
 const SERVICE_ID = "service_p5htc7d";
 const TEMPLATE_ID = "template_kh3udza";
@@ -99,8 +101,47 @@ export default function Contact() {
     }
   };
 
+  // Google Schema - ეუბნება ბოტებს, რომ ეს არის ოფიციალური საკონტაქტო გვერდი
+  const contactPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "კონტაქტი | გერმანული მატრასების მაღაზია",
+    "description": "დაგვიკავშირდით გერმანული მატრასების მაღაზიის გუნდს. მისამართი: კაიროს ქუჩა, თბილისი. ტელეფონი: 558 686 586",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "გერმანული მატრასები",
+      "telephone": "+995558686586",
+      "email": "info@mattress-shop.ge",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "კაიროს ქუჩა",
+        "addressLocality": "თბილისი",
+        "addressCountry": "GE"
+      }
+    }
+  };
+
   return (
     <div className="bg-gradient-to-b from-slate-50 to-slate-100 min-h-screen py-10 sm:py-16 px-4 sm:px-6 lg:px-8 font-sans antialiased overflow-x-hidden">
+      
+      {/* ─── SEO და საკონტაქტო მეტა ტეგები ─── */}
+      <Helmet>
+        <title>დაგვიკავშირდით | გერმანული მატრასების მაღაზია თბილისში</title>
+        <meta 
+          name="description" 
+          content="გაქვთ კითხვები მატრასებთან დაკავშირებით? დაგვიკავშირდით ნომერზე: 558 686 586 ან გვესტუმრეთ შოურუმში მისამართზე: კაიროს ქუჩა, თბილისი. მუშაობის საათები: 10:00 - 23:00." 
+        />
+        <meta name="keywords" content="matrasebi kontakti, მატრასების მაღაზია თბილისი, მატრასები კაიროს ქუჩა, კავშირი, ტელეფონი" />
+        
+        <meta property="og:title" content="დაგვიკავშირდით | გერმანული მატრასების მაღაზია" />
+        <meta property="og:description" content="მოგვწერეთ შეტყობინება ან დაგვირეკეთ: 558 686 586. მზად ვართ დასახმარებლად." />
+
+        {/* საკონტაქტო Schema ინექცია */}
+        <script type="application/ld+json">
+          {JSON.stringify(contactPageSchema)}
+        </script>
+      </Helmet>
+
       <div className="max-w-6xl mx-auto">
         {/* სათაურის სექცია */}
         <div className="text-center mb-10 sm:mb-14 space-y-2.5">
@@ -125,7 +166,7 @@ export default function Contact() {
             <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
             <div className="relative z-10">
               <h3 className="text-lg sm:text-2xl font-bold mb-1.5 tracking-tight">
-                **საკონტაქტო ინფო**
+                საკონტაქტო ინფო
               </h3>
               <p className="text-slate-400 text-xs sm:text-sm leading-relaxed mb-6 sm:mb-8">
                 ესტუმრეთ შოურუმს ან დაგვიკავშირდით მოსახერხებელი არხით.

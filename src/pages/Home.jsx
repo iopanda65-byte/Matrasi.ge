@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
+// შემოგვაქვს Helmet მეტა ტეგების სამართავად
+import { Helmet } from "react-helmet-async";
 
-// მედია ფაილების სწორი მისამართები (თუ ფაილები public საქაღალდეშია)
+// მედია ფაილების სწორი მისამართები
 const img1 = "/Black.png";
 const img2 = "/tetri.png";
 const img3 = "/shida.png";
@@ -71,9 +73,45 @@ export default function Main() {
     setActiveVideo(i);
   };
 
+  // Google Schema Markup - გვეხმარება ძებნაში მაღაზიის სწორად იდენტიფიცირებაში
+  const storeSchema = {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "გერმანული მატრასები - Germanuli Matrasebi",
+    "description": "უმაღლესი გერმანული სტანდარტებით შექმნილი ორთოპედიული და ანატომიური მატრასები მაქსიმალური კომფორტისთვის.",
+    "telephone": phoneNumber,
+    "priceRange": "₾₾",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "GE",
+      "addressLocality": "Tbilisi"
+    }
+  };
+
   return (
-    // დავამატეთ scroll-smooth მთლიან კონტეინერზე, რომ ჩამოსვლა იყოს რბილი და სასიამოვნო
     <div className="bg-slate-50 min-h-screen font-sans text-slate-800 antialiased overflow-x-hidden scroll-smooth">
+      
+      {/* ─── SEO და მეტა ტეგები (Helmet) ─── */}
+      <Helmet>
+        <title>გერმანული მატრასები | პრემიუმ ორთოპედიული მატრასები</title>
+        <meta 
+          name="description" 
+          content="შეიძინეთ უმაღლესი ხარისხის გერმანული ორთოპედიული მატრასები. ანატომიური სიზუსტე, 2 წლიანი გარანტია და უფასო მიწოდება. დარეკეთ: +995 558 68 65 86" 
+        />
+        <meta name="keywords" content="matrasebi, მატრასები, გერმანული მატრასები, ortopediuli matrasebi, ორთოპედიული მატრასები, იაფად" />
+        
+        {/* Open Graph ტეგები Facebook/Viber-ში გაზიარებისას ლამაზად გამოსაჩენად */}
+        <meta property="og:title" content="გერმანული მატრასები | პრემიუმ ორთოპედიული მატრასები" />
+        <meta property="og:description" content="გერმანული სტანდარტის მატრასები უფასო მიწოდებითა და გარანტიით." />
+        <meta property="og:image" content={img2} />
+        <meta property="og:type" content="website" />
+
+        {/* Google Schema ინექცია */}
+        <script type="application/ld+json">
+          {JSON.stringify(storeSchema)}
+        </script>
+      </Helmet>
+
       {/* ─── HERO ─── */}
       <section className="relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-900 text-white overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 sm:w-96 sm:h-96 bg-emerald-500/8 rounded-full blur-3xl pointer-events-none" />
@@ -101,7 +139,6 @@ export default function Main() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 pt-1 max-w-xs mx-auto sm:max-w-none lg:mx-0">
-                {/* შეცვლილი ღილაკი: href მიუთითებს პროდუქტების id-ზე */}
                 <a
                   href="#products-section"
                   className="flex-1 sm:flex-none px-7 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 active:from-emerald-400 active:to-teal-500 text-slate-950 font-bold rounded-2xl shadow-lg shadow-emerald-500/20 transition-all duration-200 active:scale-[0.97] text-center text-sm sm:text-base cursor-pointer"
@@ -206,7 +243,6 @@ export default function Main() {
       </section>
 
       {/* ─── PRODUCTS ─── */}
-      {/* დავამატეთ id="products-section" სექციაზე, რომლისკენაც ჩამოვა გვერდი */}
       <section
         id="products-section"
         className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 scroll-mt-6"

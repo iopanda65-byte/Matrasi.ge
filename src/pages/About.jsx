@@ -1,4 +1,6 @@
 import React from "react";
+// შემოგვაქვს Helmet მეტა ტეგების სამართავად
+import { Helmet } from "react-helmet-async";
 
 const FEATURES = [
   {
@@ -18,7 +20,7 @@ const FEATURES = [
       </svg>
     ),
     title: "100% ეკო-მეგობრული",
-    desc: "ვიყენებთ მხოლოდ უსაფრთხო, სუნთქვად და ნატურალურ მასალებს, რომლებიც იცავს ბავშვებსა და უფროსებს ალერგიისგან.",
+    desc: "ვიყენებთ მხოლოდ უსაფრთხო, სუნთწვად და ნატურალურ მასალებს, რომლებიც იცავს ბავშვებსა და უფროსებს ალერგიისგან.",
   },
   {
     icon: (
@@ -63,8 +65,52 @@ const FEATURES = [
 export default function About() {
   const phoneNumber = "+995558686586";
 
+  // Google Schema - სტრუქტურირებული მონაცემები About გვერდისთვის
+  const aboutPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: "ჩვენს შესახებ | გერმანული მატრასების მაღაზია",
+    description:
+      "შეიტყვეთ მეტი ჩვენი ისტორიის შესახებ. ჩვენ გთავაზობთ ეკოლოგიურად სუფთა გერმანულ მატრასებს, მემორი ეფექტით (Memory Foam) და პოკეტ ზამბარებით (Pocket Spring).",
+    publisher: {
+      "@type": "Organization",
+      name: "გერმანული მატრასები",
+      telephone: "+995558686586",
+      logo: "https://შენი-დომენი.ge/logo.png", // შეცვალე შენი ლოგოს რეალური მისამართით
+    },
+  };
+
   return (
     <div className="bg-gradient-to-b from-slate-50 to-slate-100 min-h-screen font-sans text-slate-800 antialiased overflow-x-hidden">
+      {/* ─── SEO მეტა ტეგები ─── */}
+      <Helmet>
+        <title>ჩვენს შესახებ | გერმანული მატრასების მაღაზია</title>
+        <meta
+          name="description"
+          content="გაიცანით ჩვენი ბრენდი. ჩვენი მიზანია ჯანსაღი და მშვიდი ძილი. ეკოლოგიურად სუფთა მატრასები 10 წლიანი გარანტიითა და უფასო მიწოდებით მთელ საქართველოში."
+        />
+        <meta
+          name="keywords"
+          content="ჩვენს შესახებ, chvens shesaxeb, გერმანული მატრასები, ორთოპედიული მატრასები, ჯანსაღი ძილი, memory foam matrasi, pocket spring"
+        />
+
+        {/* Open Graph ტეგები სოც. ქსელებისთვის */}
+        <meta
+          property="og:title"
+          content="ჩვენს შესახებ | გერმანული მატრასების მაღაზია"
+        />
+        <meta
+          property="og:description"
+          content="ხარისხი, რომელიც იგრძნობა პირველივე ღამიდან. გაიგეთ მეტი ჩვენს მასალებსა და ტექნოლოგიებზე."
+        />
+        <meta property="og:type" content="website" />
+
+        {/* JSON-LD სქემის ინექცია ბოტებისთვის */}
+        <script type="application/ld+json">
+          {JSON.stringify(aboutPageSchema)}
+        </script>
+      </Helmet>
+
       {/* ─── HERO ─── */}
       <section className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-14 sm:py-28 px-4 sm:px-6 lg:px-8 text-center overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-72 h-72 sm:w-96 sm:h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -135,7 +181,7 @@ export default function About() {
             {FEATURES.map((f, i) => (
               <div
                 key={i}
-                style={{ animationDelay: `${450 + i * 100}ms` }} // ბარათები ამოვა რიგრიგობით
+                style={{ animationDelay: `${450 + i * 100}ms` }}
                 className="animate-card flex gap-4 md:flex-col md:gap-0 p-5 sm:p-8 group md:text-left"
               >
                 {/* ხატულა */}

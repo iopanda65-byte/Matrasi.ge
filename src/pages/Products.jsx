@@ -1,4 +1,6 @@
 import React from "react";
+// შემოგვაქვს Helmet მეტა ტეგებისთვის
+import { Helmet } from "react-helmet-async";
 
 const img1 = "Black.png";
 const img2 = "tetri.png";
@@ -72,8 +74,60 @@ const STATS = [
 export default function Product() {
   const phoneNumber = "+995558686586";
 
+  // დინამიური სტრუქტურა Google-სთვის, რომელიც ავტომატურად აგენერირებს Schema-ს ყველა პროდუქტზე
+  const productListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: MATTRESSES.map((mattress, idx) => ({
+      "@type": "ListItem",
+      position: idx + 1,
+      item: {
+        "@type": "Product",
+        name: mattress.name,
+        description: mattress.info,
+        image: `${window.location.origin}/${mattress.img}`,
+        offers: {
+          "@type": "Offer",
+          price: mattress.price.replace(/[^\d]/g, ""), // ტოვებს მხოლოდ ციფრებს (მაგ: 750)
+          priceCurrency: "GEL",
+          availability: "https://schema.org/InStock",
+          priceValidUntil: "2027-12-31",
+        },
+      },
+    })),
+  };
+
   return (
     <div className="bg-gradient-to-b from-slate-50 via-slate-100 to-slate-200 min-h-screen font-sans antialiased text-slate-800 overflow-x-hidden">
+      {/* ─── SEO და კატალოგის მეტა ტეგები ─── */}
+      <Helmet>
+        <title>ორთოპედიული მატრასების კატალოგი | გერმანული ხარისხი</title>
+        <meta
+          name="description"
+          content="იხილეთ გერმანული ორთოპედიული მატრასების სრული კატალოგი: Memory Foam, ნატურალური ლატექსი, ქოქოსის ბოჭკო და საბავშვო მოდელები. ფასები 340 ₾-დან."
+        />
+        <meta
+          name="keywords"
+          content="matrasebis katalogi, მატრასების ფასები, ორთოპედიული მატრასი, ლატექსის მატრასი, მემორი მატრასები"
+        />
+
+        {/* Open Graph ტეგები სოციალური ქსელებისთვის */}
+        <meta
+          property="og:title"
+          content="ორთოპედიული მატრასების კატალოგი | გერმანული ხარისხი"
+        />
+        <meta
+          property="og:description"
+          content="Premium, Memory Gel, Bio მოდელები საუკეთესო ფასად ოფიციალური გარანტიით."
+        />
+        <meta property="og:image" content={img1} />
+
+        {/* პროდუქტების კატალოგის Schema ინექცია */}
+        <script type="application/ld+json">
+          {JSON.stringify(productListSchema)}
+        </script>
+      </Helmet>
+
       {/* ─── HEADER ─── */}
       <div className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="text-center mb-10 sm:mb-16 space-y-3 relative">
@@ -94,7 +148,7 @@ export default function Product() {
           {MATTRESSES.map((mattress, index) => (
             <div
               key={mattress.id}
-              style={{ animationDelay: `${index * 80}ms` }} // თითოეული ბარათი ამოვა მცირე დაგვიანებით
+              style={{ animationDelay: `${index * 80}ms` }}
               className="animate-card bg-slate-800/95 shadow-lg shadow-slate-900/10 rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-700/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.15)] hover:border-emerald-500/30 flex flex-col group p-3 sm:p-5 relative text-slate-100"
             >
               {/* IMAGE */}
@@ -196,7 +250,6 @@ export default function Product() {
             დღეში.
           </p>
           <a
-            box-shadow="none"
             href={`tel:${phoneNumber}`}
             className="inline-flex items-center gap-2 px-7 sm:px-8 py-3.5 sm:py-4 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold rounded-xl shadow-md transition-all duration-200 active:scale-[0.97] text-sm sm:text-base"
           >
