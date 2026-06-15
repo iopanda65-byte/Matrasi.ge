@@ -52,25 +52,23 @@ const VIDEOS = [
 const FEATURED_PRODUCTS = [
   {
     id: 1,
-    name: "Germanuli Matrasebi Premium Ortho",
-    price: "750 ₾",
-    oldPrice: "900 ₾",
+    name: "კრონენ-ორთო პრემიუმი",
+    desc: "უმაღლესი კლასის 7-ზონიანი ორთოპედიული მატრასი ხერხემლის მაქსიმალური მხარდაჭერისთვის.",
     tag: "გერმანული სტანდარტი",
     img: "/Magari.jpeg",
   },
   {
     id: 2,
-    name: "TraumWerk Memory Foam",
-    price: "890 ₾",
+    name: "ორთო-გელ მემორი",
+    desc: "ინოვაციური მეხსიერების ეფექტის მქონე გელი, რომელიც იდეალურად იმეორებს სხეულის ფორმებს.",
     tag: "ახალი ტექნოლოგია",
     img: imgTetri,
   },
   {
-    id: 3, // ID გასწორდა თანმიმდევრობაში
-    name: "BadenMatt Eco Comfort",
-    price: "1,200 ₾",
-    oldPrice: "1,450 ₾",
-    tag: "ტოპ ფასდაკლება",
+    id: 3,
+    name: "ეკო-შლაფ ბიო",
+    desc: "ნატურალური ქოქოსის ბოჭკოებითა და ეკოლოგიურად სუფთა მასალებით შექმნილი ჯანსაღი ბაზა.",
+    tag: "ტოპ არჩევანი",
     img: imgTalga,
   },
 ];
@@ -97,11 +95,10 @@ export default function Main() {
   const storeSchema = {
     "@context": "https://schema.org",
     "@type": "Store",
-    name: "გერმანული მატრასები - Germanuli Matrasebi",
+    name: "გერმანული მატრასები - Schlafkraft",
     description:
       "უმაღლესი გერმანული სტანდარტებით შექმნილი ორთოპედიული და ანატომიური მატრასები მაქსიმალური კომფორტისთვის.",
     telephone: phoneNumber,
-    priceRange: "₾₾",
     address: {
       "@type": "PostalAddress",
       addressCountry: "GE",
@@ -120,7 +117,7 @@ export default function Main() {
         />
         <meta
           name="keywords"
-          content="matrasebi, მატრასები, გერმანული მატრასები, ortopediuli matrasebi, ორთოპედიული მატრასები, იაფად"
+          content="matrasebi, მატრასები, გერმანული მატრასები, ortopediuli matrasebi, ორთოპედიული მატრასები, მატრასების დამზადება"
         />
         {/* Open Graph ტეგები */}
         <meta
@@ -131,8 +128,7 @@ export default function Main() {
           property="og:description"
           content="გერმანული სტანდარტის მატრასები უფასო მიწოდებითა და გარანტიით."
         />
-        <meta property="og:image" content={imgTetri} />{" "}
-        {/* გასწორდა img2 -> imgTetri */}
+        <meta property="og:image" content={imgTetri} />
         <meta property="og:type" content="website" />
         {/* Google Schema ინექცია */}
         <script type="application/ld+json">
@@ -151,7 +147,7 @@ export default function Main() {
             {/* left */}
             <div className="space-y-5 sm:space-y-7 text-center lg:text-left">
               <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[11px] sm:text-xs font-bold tracking-widest uppercase">
-                🇩🇪 GERMANULI MATRASEBI · გერმანული ხარისხი
+                🇩🇪 SCHLAFKRAFT · გერმანული ხარისხი
               </span>
 
               <h1 className="text-[2rem] leading-tight sm:text-5xl lg:text-6xl font-extrabold tracking-tight">
@@ -186,13 +182,13 @@ export default function Main() {
             <div className="hidden lg:flex justify-center">
               <div className="w-full max-w-sm h-64 xl:h-72 rounded-3xl overflow-hidden shadow-2xl border border-white/10 relative group">
                 <img
-                  src={imgTetri} // გასწორდა img2 -> imgTetri ჰერო სექციაშიც
-                  alt="Germanuli Matrasebi Premium"
+                  src={imgTetri}
+                  alt="გერმანული მატრასები პრემიუმი"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/50 to-transparent" />
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-slate-950/80 text-emerald-400 border border-emerald-500/20 px-4 py-1.5 rounded-lg text-xs font-black tracking-wider uppercase whitespace-nowrap backdrop-blur-sm">
-                  Deutsche Quality 🇩🇪
+                  Deutsche Qualität 🇩🇪
                 </div>
               </div>
             </div>
@@ -314,27 +310,20 @@ export default function Main() {
               </div>
 
               <div className="p-4 sm:p-5 flex flex-col flex-1">
-                <div className="flex-1 mb-4 text-center space-y-1">
+                <div className="flex-1 mb-4 text-center space-y-1.5">
                   <h3 className="font-bold text-slate-900 text-sm sm:text-base tracking-tight leading-snug">
                     {mattress.name}
                   </h3>
-                  <div className="flex items-center justify-center gap-2 pt-1">
-                    {mattress.oldPrice && (
-                      <span className="text-xs text-slate-400 line-through">
-                        {mattress.oldPrice}
-                      </span>
-                    )}
-                    <span className="text-lg sm:text-xl font-black text-slate-900">
-                      {mattress.price}
-                    </span>
-                  </div>
+                  <p className="text-xs text-slate-500 font-medium leading-relaxed px-1">
+                    {mattress.desc}
+                  </p>
                 </div>
                 <a
                   href={`tel:${phoneNumber}`}
                   className="w-full py-3 bg-slate-900 hover:bg-emerald-500 hover:text-slate-950 text-white text-xs sm:text-sm font-semibold rounded-xl text-center transition-all duration-300 flex items-center justify-center gap-2 active:scale-[0.97]"
                 >
                   <span>📞</span>
-                  <span>სწრაფი შეკვეთა</span>
+                  <span>დეტალები და შეკვეთა</span>
                 </a>
               </div>
             </div>
