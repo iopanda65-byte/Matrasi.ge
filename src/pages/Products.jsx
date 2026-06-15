@@ -2,12 +2,12 @@ import React from "react";
 // შემოგვაქვს Helmet მეტა ტეგებისთვის
 import { Helmet } from "react-helmet-async";
 
-const img1 = "Black.png";
+const img1 = "Brown.jpeg";
 const img2 = "tetri.png";
-const img3 = "shida.png";
+const img3 = "Mtsvane.jpeg";
 const img4 = "Seri.png";
-const img5 = "Shida2.png";
-const img6 = "Shavi2.png";
+const img5 = "Lurji.jpeg";
+const img6 = "Masala.jpeg";
 
 const MATTRESSES = [
   {
@@ -74,7 +74,6 @@ const STATS = [
 export default function Product() {
   const phoneNumber = "+995558686586";
 
-  // დინამიური სტრუქტურა Google-სთვის, რომელიც ავტომატურად აგენერირებს Schema-ს ყველა პროდუქტზე
   const productListSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -88,7 +87,7 @@ export default function Product() {
         image: `${window.location.origin}/${mattress.img}`,
         offers: {
           "@type": "Offer",
-          price: mattress.price.replace(/[^\d]/g, ""), // ტოვებს მხოლოდ ციფრებს (მაგ: 750)
+          price: mattress.price.replace(/[^\d]/g, ""),
           priceCurrency: "GEL",
           availability: "https://schema.org/InStock",
           priceValidUntil: "2027-12-31",
@@ -99,7 +98,6 @@ export default function Product() {
 
   return (
     <div className="bg-gradient-to-b from-slate-50 via-slate-100 to-slate-200 min-h-screen font-sans antialiased text-slate-800 overflow-x-hidden">
-      {/* ─── SEO და კატალოგის მეტა ტეგები ─── */}
       <Helmet>
         <title>ორთოპედიული მატრასების კატალოგი | გერმანული ხარისხი</title>
         <meta
@@ -110,8 +108,6 @@ export default function Product() {
           name="keywords"
           content="matrasebis katalogi, მატრასების ფასები, ორთოპედიული მატრასი, ლატექსის მატრასი, მემორი მატრასები"
         />
-
-        {/* Open Graph ტეგები სოციალური ქსელებისთვის */}
         <meta
           property="og:title"
           content="ორთოპედიული მატრასების კატალოგი | გერმანული ხარისხი"
@@ -122,7 +118,6 @@ export default function Product() {
         />
         <meta property="og:image" content={img1} />
 
-        {/* პროდუქტების კატალოგის Schema ინექცია */}
         <script type="application/ld+json">
           {JSON.stringify(productListSchema)}
         </script>
@@ -151,8 +146,8 @@ export default function Product() {
               style={{ animationDelay: `${index * 80}ms` }}
               className="animate-card bg-slate-800/95 shadow-lg shadow-slate-900/10 rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-700/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.15)] hover:border-emerald-500/30 flex flex-col group p-3 sm:p-5 relative text-slate-100"
             >
-              {/* IMAGE */}
-              <div className="bg-slate-100 rounded-xl sm:rounded-2xl h-36 sm:h-52 flex items-center justify-center relative overflow-hidden mb-3 sm:mb-5 border border-slate-700/30 p-2 shrink-0">
+              {/* IMAGE CONTAINER (აქ შესწორდა კლასები სრული ხედვისთვის) */}
+              <div className="bg-slate-900 rounded-xl sm:rounded-2xl h-36 sm:h-52 flex items-center justify-center relative overflow-hidden mb-3 sm:mb-5 border border-slate-700/30 shrink-0">
                 <div className="absolute top-2 left-2 bg-slate-900/80 backdrop-blur-md border border-slate-700/40 px-2 py-0.5 rounded-md z-10">
                   <span className="text-[9px] font-bold text-white uppercase tracking-widest">
                     #{mattress.id}
@@ -166,8 +161,9 @@ export default function Product() {
                 <img
                   src={mattress.img}
                   alt={mattress.name}
-                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 ease-out select-none mix-blend-multiply"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out select-none"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
               </div>
 
               {/* INFO */}

@@ -2,29 +2,50 @@ import React, { useState, useRef } from "react";
 // შემოგვაქვს Helmet მეტა ტეგების სამართავად
 import { Helmet } from "react-helmet-async";
 
-// მედია ფაილების სწორი მისამართები
-const img1 = "/Black.png";
-const img2 = "/tetri.png";
-const img3 = "/shida.png";
+// მედია ფაილების სწორი მისამართები public საქაღალდიდან
+const imgTalga = "/Talga.jpeg";
+const imgBrown = "/Brown.jpeg";
+const imgTetri = "/Tetri2.jpeg";
+const imgLurji = "/Lurji.jpeg";
+const imgMasala = "/Masala.jpeg";
+const imgMtsvane = "/Mtsvane.jpeg";
 
 const VIDEOS = [
   {
     src: "/Matrasi.mp4",
-    poster: img3,
+    poster: imgTalga,
     title: "მატრასის პრეზენტაცია",
     desc: "გერმანული წარმოება და ანატომიური სტრუქტურა",
   },
   {
     src: "/Koja.mp4",
-    poster: img1,
+    poster: imgBrown,
     title: "კოჟის კოლექცია",
     desc: "პრემიუმ კოჟის საფარი და შიდა ფენები",
   },
   {
     src: "/Masajori.mp4",
-    poster: img2,
+    poster: imgTetri,
     title: "მასაჟური სისტემა",
     desc: "ჩაშენებული მასაჟური მექანიზმის დემონსტრაცია",
+  },
+  {
+    src: "/Comfort.mp4",
+    poster: imgLurji,
+    title: "კომფორტის ტესტი",
+    desc: "მატრასის რბილობისა და დრეკადობის ტესტირება",
+  },
+  {
+    src: "/Masajori2.mp4",
+    poster: imgMasala,
+    title: "მასაჟის რეჟიმები",
+    desc: "სხვადასხვა ინტენსივობის მასაჟური ფუნქციები",
+  },
+  {
+    src: "/zolebi.mp4",
+    poster: imgMtsvane,
+    title: "შიდა ფენების ხედი",
+    desc: "ანატომიური ფენების დეტალური სტრუქტურა",
   },
 ];
 
@@ -35,22 +56,22 @@ const FEATURED_PRODUCTS = [
     price: "750 ₾",
     oldPrice: "900 ₾",
     tag: "გერმანული სტანდარტი",
-    img: img1,
+    img: "/Magari.jpeg",
   },
   {
     id: 2,
     name: "TraumWerk Memory Foam",
     price: "890 ₾",
     tag: "ახალი ტექნოლოგია",
-    img: img2,
+    img: imgTetri,
   },
   {
-    id: 4,
+    id: 3, // ID გასწორდა თანმიმდევრობაში
     name: "BadenMatt Eco Comfort",
     price: "1,200 ₾",
     oldPrice: "1,450 ₾",
     tag: "ტოპ ფასდაკლება",
-    img: img3,
+    img: imgTalga,
   },
 ];
 
@@ -73,39 +94,46 @@ export default function Main() {
     setActiveVideo(i);
   };
 
-  // Google Schema Markup - გვეხმარება ძებნაში მაღაზიის სწორად იდენტიფიცირებაში
   const storeSchema = {
     "@context": "https://schema.org",
     "@type": "Store",
-    "name": "გერმანული მატრასები - Germanuli Matrasebi",
-    "description": "უმაღლესი გერმანული სტანდარტებით შექმნილი ორთოპედიული და ანატომიური მატრასები მაქსიმალური კომფორტისთვის.",
-    "telephone": phoneNumber,
-    "priceRange": "₾₾",
-    "address": {
+    name: "გერმანული მატრასები - Germanuli Matrasebi",
+    description:
+      "უმაღლესი გერმანული სტანდარტებით შექმნილი ორთოპედიული და ანატომიური მატრასები მაქსიმალური კომფორტისთვის.",
+    telephone: phoneNumber,
+    priceRange: "₾₾",
+    address: {
       "@type": "PostalAddress",
-      "addressCountry": "GE",
-      "addressLocality": "Tbilisi"
-    }
+      addressCountry: "GE",
+      addressLocality: "Tbilisi",
+    },
   };
 
   return (
     <div className="bg-slate-50 min-h-screen font-sans text-slate-800 antialiased overflow-x-hidden scroll-smooth">
-      
       {/* ─── SEO და მეტა ტეგები (Helmet) ─── */}
       <Helmet>
         <title>გერმანული მატრასები | პრემიუმ ორთოპედიული მატრასები</title>
-        <meta 
-          name="description" 
-          content="შეიძინეთ უმაღლესი ხარისხის გერმანული ორთოპედიული მატრასები. ანატომიური სიზუსტე, 2 წლიანი გარანტია და უფასო მიწოდება. დარეკეთ: +995 558 68 65 86" 
+        <meta
+          name="description"
+          content="შეიძინეთ უმაღლესი ხარისხის გერმანული ორთოპედიული მატრასები. ანატომიური სიზუსტე, 2 წლიანი გარანტია და უფასო მიწოდება. დარეკეთ: +995 558 68 65 86"
         />
-        <meta name="keywords" content="matrasebi, მატრასები, გერმანული მატრასები, ortopediuli matrasebi, ორთოპედიული მატრასები, იაფად" />
-        
-        {/* Open Graph ტეგები Facebook/Viber-ში გაზიარებისას ლამაზად გამოსაჩენად */}
-        <meta property="og:title" content="გერმანული მატრასები | პრემიუმ ორთოპედიული მატრასები" />
-        <meta property="og:description" content="გერმანული სტანდარტის მატრასები უფასო მიწოდებითა და გარანტიით." />
-        <meta property="og:image" content={img2} />
+        <meta
+          name="keywords"
+          content="matrasebi, მატრასები, გერმანული მატრასები, ortopediuli matrasebi, ორთოპედიული მატრასები, იაფად"
+        />
+        {/* Open Graph ტეგები */}
+        <meta
+          property="og:title"
+          content="გერმანული მატრასები | პრემიუმ ორთოპედიული მატრასები"
+        />
+        <meta
+          property="og:description"
+          content="გერმანული სტანდარტის მატრასები უფასო მიწოდებითა და გარანტიით."
+        />
+        <meta property="og:image" content={imgTetri} />{" "}
+        {/* გასწორდა img2 -> imgTetri */}
         <meta property="og:type" content="website" />
-
         {/* Google Schema ინექცია */}
         <script type="application/ld+json">
           {JSON.stringify(storeSchema)}
@@ -158,7 +186,7 @@ export default function Main() {
             <div className="hidden lg:flex justify-center">
               <div className="w-full max-w-sm h-64 xl:h-72 rounded-3xl overflow-hidden shadow-2xl border border-white/10 relative group">
                 <img
-                  src={img2}
+                  src={imgTetri} // გასწორდა img2 -> imgTetri ჰერო სექციაშიც
                   alt="Germanuli Matrasebi Premium"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
