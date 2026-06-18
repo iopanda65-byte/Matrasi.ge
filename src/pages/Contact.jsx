@@ -81,7 +81,6 @@ export default function Contact() {
       return;
     }
 
-    // ტექსტის ფორმატირება, რომელიც ჩაიწერება WhatsApp-ში ავტომატურად
     const text = encodeURIComponent(
       `✨ ახალი შეტყობინება საიტიდან matrasebi.com.ge ✨\n\n` +
         `👤 კლიენტი: ${form.name}\n` +
@@ -124,7 +123,6 @@ export default function Contact() {
   };
 
   return (
-    // დამატებულია pt-28 და sm:pt-36 სათაურის მოჭრის გამოსასწორებლად
     <div className="bg-gradient-to-b from-slate-50 to-slate-100 min-h-screen pt-28 sm:pt-36 pb-10 sm:pb-16 px-4 sm:px-6 lg:px-8 font-sans antialiased overflow-x-hidden">
       <Helmet>
         <title>დაგვიკავშირდით | გერმანული მატრასები</title>
@@ -236,36 +234,40 @@ export default function Contact() {
                   მოგვწერეთ შეტყობინება
                 </h3>
 
-                <div>
-                  <label className="block text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-                    სახელი და გვარი <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={form.name}
-                    onChange={(e) => handleChange("name", e.target.value)}
-                    placeholder="გიორგი კაპანაძე"
-                    className={`${INPUT_CLS} ${errors.name ? "border-red-400 focus:ring-red-100" : ""}`}
-                  />
-                  {errors.name && (
-                    <p className="text-xs text-red-500 mt-1">{errors.name}</p>
-                  )}
-                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                      სახელი და გვარი <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={form.name}
+                      onChange={(e) => handleChange("name", e.target.value)}
+                      placeholder="გიორგი კაპანაძე"
+                      className={`${INPUT_CLS} ${errors.name ? "border-red-400 focus:ring-red-100" : ""}`}
+                    />
+                    {errors.name && (
+                      <p className="text-xs text-red-500 mt-1">{errors.name}</p>
+                    )}
+                  </div>
 
-                <div>
-                  <label className="block text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-                    ტელეფონის ნომერი <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="tel"
-                    value={form.phone}
-                    onChange={(e) => handleChange("phone", e.target.value)}
-                    placeholder="555 XXXXXX"
-                    className={`${INPUT_CLS} ${errors.phone ? "border-red-400 focus:ring-red-100" : ""}`}
-                  />
-                  {errors.phone && (
-                    <p className="text-xs text-red-500 mt-1">{errors.phone}</p>
-                  )}
+                  <div>
+                    <label className="block text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                      ტელეფონის ნომერი <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="tel"
+                      value={form.phone}
+                      onChange={(e) => handleChange("phone", e.target.value)}
+                      placeholder="555 XXXXXX"
+                      className={`${INPUT_CLS} ${errors.phone ? "border-red-400 focus:ring-red-100" : ""}`}
+                    />
+                    {errors.phone && (
+                      <p className="text-xs text-red-500 mt-1">
+                        {errors.phone}
+                      </p>
+                    )}
+                  </div>
                 </div>
 
                 <div>
