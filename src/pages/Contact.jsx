@@ -1,17 +1,14 @@
-import React, { useRef, useState } from "react";
-import emailjs from "@emailjs/browser";
+import React, { useState } from "react";
 // შემოგვაქვს Helmet მეტა ტეგებისთვის
 import { Helmet } from "react-helmet-async";
 
-const SERVICE_ID = "service_p5htc7d";
-const TEMPLATE_ID = "template_kh3udza";
-const PUBLIC_KEY = "eYu17pNcJigA8JlG1";
+const PHONE_GE = "+995558686586"; // WhatsApp ფორმატი
 
 const CONTACT_ITEMS = [
   {
     href: "https://maps.app.goo.gl/fqMvKCkxZXhM3iZX7",
     label: "მისამართი",
-    value: "კაეროს ქუჩა, თბილისი",
+    value: "კაიროს ქუჩა, თბილისი",
     icon: (
       <svg
         className="w-5 h-5 text-emerald-400"
@@ -23,6 +20,7 @@ const CONTACT_ITEMS = [
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
+          pathLength="none"
           d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
         />
         <path
@@ -34,7 +32,7 @@ const CONTACT_ITEMS = [
     ),
   },
   {
-    href: "tel:+995558686586",
+    href: `tel:${PHONE_GE}`,
     label: "ტელეფონი",
     value: "558 686 586",
     icon: (
@@ -79,71 +77,105 @@ const INPUT_CLS =
   "w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-900 focus:bg-white transition-all text-base sm:text-sm";
 
 export default function Contact() {
-  const formRef = useRef();
-  const [status, setStatus] = useState("");
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    mattress: "ორთოპედიული მატრასი 'Premium'",
+    message: "",
+  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus("loading");
-    try {
-      await emailjs.sendForm(
-        SERVICE_ID,
-        TEMPLATE_ID,
-        formRef.current,
-        PUBLIC_KEY
-      );
-      
-      setStatus("success");
-      formRef.current.reset();
-    } catch (err) {
-      console.error("EmailJS Error:", err);
-      setStatus("error");
-    }
+  const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  // ვალიდაცია
+  const validate = () => {
+    const e = {};
+    if (!form.name.trim()) e.name = "სახელი და გვარი სავალდებულოა";
+    if (!form.phone.trim()) e.phone = "ტელეფონის ნომერი სავალდებულოა";
+    return e;
   };
 
-  // Google Schema - ეუბნება ბოტებს, რომ ეს არის ოფიციალური საკონტაქტო გვერდი
+  // WhatsApp-ზე გადამისამართება
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const eValid = validate();
+
+    if (Object.keys(eValid).length) {
+      setErrors(eValid);
+      return;
+    }
+
+    const text = encodeURIComponent(
+      `✨ ახალი შეტყობინება მატრასების მაღაზიიდან! ✨\n\n` +
+        `👤 კლიენტი: ${form.name}\n` +
+        `📞 ტელეფონი: ${form.phone}\n` +
+        `📧 ელ-ფოსტა: ${form.email || "არ არის მითითებული"}\n` +
+        `🛏️ მოდელი: ${form.mattress}\n` +
+        `💬 შეტყობინება: ${form.message || "მხოლოდ დაინტერესება"}`,
+    );
+
+    window.open(
+      `https://wa.me/${PHONE_GE.replace(/\D/g, "")}?text=${text}`,
+      "_blank",
+    );
+
+    setSubmitted(true);
+    setErrors({});
+  };
+
+  const handleChange = (field, val) => {
+    setForm((p) => ({ ...p, [field]: val }));
+    if (errors[field]) setErrors((p) => ({ ...p, [field]: undefined }));
+  };
+
+  // Google Schema
   const contactPageSchema = {
     "@context": "https://schema.org",
     "@type": "ContactPage",
-    "name": "კონტაქტი | გერმანული მატრასების მაღაზია",
-    "description": "დაგვიკავშირდით გერმანული მატრასების მაღაზიის გუნდს. მისამართი: კაიროს ქუჩა, თბილისი. ტელეფონი: 558 686 586",
-    "mainEntity": {
+    name: "კონტაქტი | გერმანული მატრასების მაღაზია",
+    description:
+      "დაგვიკავშირდით გერმანული მატრასების მაღაზიის გუნდს. მისამართი: კაიროს ქუჩა, თბილისი. ტელეფონი: 558 686 586",
+    mainEntity: {
       "@type": "Organization",
-      "name": "გერმანული მატრასები",
-      "telephone": "+995558686586",
-      "email": "info@mattress-shop.ge",
-      "address": {
+      name: "გერმანული მატრასები",
+      telephone: "+995558686586",
+      email: "info@mattress-shop.ge",
+      address: {
         "@type": "PostalAddress",
-        "streetAddress": "კაიროს ქუჩა",
-        "addressLocality": "თბილისი",
-        "addressCountry": "GE"
-      }
-    }
+        streetAddress: "კაიროს ქუჩა",
+        addressLocality: "თბილისი",
+        addressCountry: "GE",
+      },
+    },
   };
 
   return (
     <div className="bg-gradient-to-b from-slate-50 to-slate-100 min-h-screen py-10 sm:py-16 px-4 sm:px-6 lg:px-8 font-sans antialiased overflow-x-hidden">
-      
-      {/* ─── SEO და საკონტაქტო მეტა ტეგები ─── */}
       <Helmet>
         <title>დაგვიკავშირდით | გერმანული მატრასების მაღაზია თბილისში</title>
-        <meta 
-          name="description" 
-          content="გაქვთ კითხვები მატრასებთან დაკავშირებით? დაგვიკავშირდით ნომერზე: 558 686 586 ან გვესტუმრეთ შოურუმში მისამართზე: კაიროს ქუჩა, თბილისი. მუშაობის საათები: 10:00 - 23:00." 
+        <meta
+          name="description"
+          content="გაქვთ კითხვები მატრასებთან დაკავშირებით? დაგვიკავშირდით ნომერზე: 558 686 586 ან გვესტუმრეთ შოურუმში მისამართზე: კაიროს ქუჩა, თბილისი. მუშაობის საათები: 10:00 - 23:00."
         />
-        <meta name="keywords" content="matrasebi kontakti, მატრასების მაღაზია თბილისი, მატრასები კაიროს ქუჩა, კავშირი, ტელეფონი" />
-        
-        <meta property="og:title" content="დაგვიკავშირდით | გერმანული მატრასების მაღაზია" />
-        <meta property="og:description" content="მოგვწერეთ შეტყობინება ან დაგვირეკეთ: 558 686 586. მზად ვართ დასახმარებლად." />
-
-        {/* საკონტაქტო Schema ინექცია */}
+        <meta
+          name="keywords"
+          content="matrasebi kontakti, მატრასების მაღაზია თბილისი, მატრასები კაიროს ქუჩა, კავშირი, ტელეფონი"
+        />
+        <meta
+          property="og:title"
+          content="დაგვიკავშირდით | გერმანული მატრასების მაღაზია"
+        />
+        <meta
+          property="og:description"
+          content="მოგვწერეთ შეტყობინება ან დაგვირეკეთ: 558 686 586. მზად ვართ დასახმარებლად."
+        />
         <script type="application/ld+json">
           {JSON.stringify(contactPageSchema)}
         </script>
       </Helmet>
 
       <div className="max-w-6xl mx-auto">
-        {/* სათაურის სექცია */}
         <div className="text-center mb-10 sm:mb-14 space-y-2.5">
           <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/5 text-slate-600 text-[11px] font-semibold tracking-widest uppercase">
             ✉️ მზად ვართ დასახმარებლად
@@ -152,17 +184,14 @@ export default function Contact() {
             დაგვიკავშირდით
           </h1>
           <p className="text-sm sm:text-base text-slate-500 max-w-xl mx-auto leading-relaxed">
-            გაქვთ კითხვები ჩვენს მატრასებთან დაკავშირებით? დაგვიტოვეთ
-            შეტყობინება და ჩვენი გუნდი დაგეხმარებათ.
+            გაქვთ კითხვები ჩვენს მატრასებთან დაკავშირებით? შეავსეთ ფორმა და
+            გამოგვიგზავნეთ პირდაპირ WhatsApp-ში.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-8 items-start">
           {/* საკონტაქტო ბარათი */}
-          <div 
-            style={{ animationDelay: "150ms" }}
-            className="animate-card lg:col-span-1 order-1 lg:order-2 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl relative overflow-hidden"
-          >
+          <div className="lg:col-span-1 order-1 lg:order-2 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl relative overflow-hidden">
             <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
             <div className="relative z-10">
               <h3 className="text-lg sm:text-2xl font-bold mb-1.5 tracking-tight">
@@ -209,117 +238,137 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* ფორმა */}
-          <div 
-            style={{ animationDelay: "300ms" }}
-            className="animate-card lg:col-span-2 order-2 lg:order-1 bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-10 border border-slate-200/60 shadow-lg"
-          >
-            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-5 sm:mb-6 tracking-tight">
-              მოგვწერეთ შეტყობინება
-            </h3>
-
-            <form
-              ref={formRef}
-              onSubmit={handleSubmit}
-              className="space-y-4 sm:space-y-5"
-            >
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-                <div>
-                  <label className="block text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-                    სახელი და გვარი
-                  </label>
-                  <input
-                    type="text"
-                    name="from_name"
-                    placeholder="გიორგი კაპანაძე"
-                    className={INPUT_CLS}
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-                    ელ-ფოსტა
-                  </label>
-                  <input
-                    type="email"
-                    name="from_email"
-                    placeholder="giorgi@example.com"
-                    className={INPUT_CLS}
-                    required
-                  />
-                </div>
+          {/* ფორმის სექცია */}
+          <div className="lg:col-span-2 order-2 lg:order-1 bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-10 border border-slate-200/60 shadow-lg">
+            {submitted ? (
+              /* წარმატების ეკრანი */
+              <div className="text-center py-12 space-y-4">
+                <div className="text-5xl sm:text-6xl animate-bounce">💬</div>
+                <h3 className="text-xl font-extrabold text-slate-900">
+                  WhatsApp გაიხსნა!
+                </h3>
+                <p className="text-sm text-slate-500 max-w-xs mx-auto">
+                  შეტყობინება ჩაიწერა. გაგზავნეთ ჩატში და ჩვენი კონსულტანტი
+                  მალევე გიპასუხებთ.
+                </p>
+                <button
+                  onClick={() => {
+                    setSubmitted(false);
+                    setForm({
+                      name: "",
+                      email: "",
+                      phone: "",
+                      mattress: "ორთოპედიული მატრასი 'Premium'",
+                      message: "",
+                    });
+                  }}
+                  className="mt-2 px-6 py-3 bg-slate-900 hover:bg-emerald-600 text-white font-semibold rounded-xl text-sm transition-all duration-300 active:scale-95"
+                >
+                  ახალი შეტყობინება
+                </button>
               </div>
+            ) : (
+              /* თავად ფორმა */
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
+                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2 tracking-tight">
+                  მოგვწერეთ შეტყობინება
+                </h3>
 
-              <div>
-                <label className="block text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-                  ტელეფონის ნომერი
-                </label>
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder="555 XXXXXX"
-                  className={INPUT_CLS}
-                />
-              </div>
-
-              <div>
-                <label className="block text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-                  რომელი მატრასი გაინტერესებთ?
-                </label>
-                <div className="relative">
-                  <select
-                    name="mattress"
-                    className={
-                      INPUT_CLS + " appearance-none pr-10 text-slate-700"
-                    }
-                  >
-                    <option>ორთოპედიული მატრასი "Premium"</option>
-                    <option>მემორი ეფექტის მქონე მატრასი "Cloud"</option>
-                    <option>საბავშვო ეკოლოგიური მატრასი</option>
-                    <option>სხვა / ზოგადი კითხვა</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-slate-500">
-                    <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                    </svg>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                  <div>
+                    <label className="block text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                      სახელი და გვარი <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={form.name}
+                      onChange={(e) => handleChange("name", e.target.value)}
+                      placeholder="გიორგი კაპანაძე"
+                      className={`${INPUT_CLS} ${errors.name ? "border-red-400 focus:ring-red-100" : ""}`}
+                    />
+                    {errors.name && (
+                      <p className="text-xs text-red-500 mt-1">{errors.name}</p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                      ელ-ფოსტა (არასავალდებულო)
+                    </label>
+                    <input
+                      type="email"
+                      value={form.email}
+                      onChange={(e) => handleChange("email", e.target.value)}
+                      placeholder="giorgi@example.com"
+                      className={INPUT_CLS}
+                    />
                   </div>
                 </div>
-              </div>
 
-              <div>
-                <label className="block text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-                  შეტყობინება
-                </label>
-                <textarea
-                  rows="4"
-                  name="message"
-                  placeholder="მოგვწერეთ დეტალურად..."
-                  className={INPUT_CLS + " resize-none"}
-                />
-              </div>
+                <div>
+                  <label className="block text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                    ტელეფონის ნომერი <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="tel"
+                    value={form.phone}
+                    onChange={(e) => handleChange("phone", e.target.value)}
+                    placeholder="555 XXXXXX"
+                    className={`${INPUT_CLS} ${errors.phone ? "border-red-400 focus:ring-red-100" : ""}`}
+                  />
+                  {errors.phone && (
+                    <p className="text-xs text-red-500 mt-1">{errors.phone}</p>
+                  )}
+                </div>
 
-              <div className="pt-1 space-y-2">
-                <button
-                  type="submit"
-                  disabled={status === "loading"}
-                  className="w-full sm:w-auto px-8 py-4 sm:py-3.5 bg-slate-900 hover:bg-emerald-600 disabled:opacity-60 text-white text-sm font-semibold rounded-xl shadow-md transition-all duration-200 active:scale-[0.97]"
-                >
-                  {status === "loading"
-                    ? "იგზავნება..."
-                    : "შეტყობინების გაგზავნა →"}
-                </button>
-                {status === "success" && (
-                  <p className="text-emerald-600 text-sm font-medium">
-                    ✓ შეტყობინება წარმატებით გაიგზავნა!
-                  </p>
-                )}
-                {status === "error" && (
-                  <p className="text-red-500 text-sm font-medium">
-                    შეცდომა, გთხოვთ სცადოთ თავიდან.
-                  </p>
-                )}
-              </div>
-            </form>
+                <div>
+                  <label className="block text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                    რომელი მატრასი გაინტერესებთ?
+                  </label>
+                  <div className="relative">
+                    <select
+                      value={form.mattress}
+                      onChange={(e) => handleChange("mattress", e.target.value)}
+                      className={
+                        INPUT_CLS + " appearance-none pr-10 text-slate-700"
+                      }
+                    >
+                      <option>ორთოპედიული მატრასი "Premium"</option>
+                      <option>მემორი ეფექტის მქონე მატრასი "Cloud"</option>
+                      <option>საბავშვო ეკოლოგიური მატრასი</option>
+                      <option>სხვა / ზოგადი კითხვა</option>
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-slate-500">
+                      <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                    შეტყობინება
+                  </label>
+                  <textarea
+                    rows="4"
+                    value={form.message}
+                    onChange={(e) => handleChange("message", e.target.value)}
+                    placeholder="მაგ: მინდა მატრასი ზომით 160x200-ზე, გაქვთ ადგილზე?"
+                    className={INPUT_CLS + " resize-none"}
+                  />
+                </div>
+
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    className="w-full sm:w-auto px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition-all duration-300 shadow-md hover:shadow-lg active:scale-[0.98] flex items-center justify-center gap-2"
+                  >
+                    <span>💬</span>
+                    <span>WhatsApp-ით გაგზავნა</span>
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       </div>
